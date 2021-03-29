@@ -1,0 +1,112 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Calculadora
+{   
+    
+    public partial class FrmOrdenamiento : Form
+    {
+        List<int> nuevoarreglo = new List<int>();
+        public FrmOrdenamiento()
+        {
+            InitializeComponent();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            int[] lista = nuevoarreglo.ToArray();
+            BucketSort(lista, 0, lista.Length - 1);
+
+            foreach (var item in lista)
+            {
+                lstOrdenado.Items.Add(item.ToString());
+            }
+
+        }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            //Agregar un numero en la lista
+            //Declarar variable 
+            int vector;
+            //Leer nro
+           vector = int.Parse(txtNro.Text);
+            //Llevar el numero a la lista
+            lstOriginal.Items.Add(vector);
+
+            //Limpiar la caja de texto
+            txtNro.Clear();
+            txtNro.Focus();
+            nuevoarreglo.Add(vector);
+        }
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            //Limpiar el arreglo, o lista de los numeros
+            lstOriginal.Items.Clear();
+            lstOrdenado.Items.Clear();
+        }
+
+        private void txtNro_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lstOriginal_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BucketSort(int [] data, int minvalue, int maxvalue) 
+        {
+            int minValue = data[0];
+            int maxValue = data[0];
+
+            for (int i = 1; i < data.Length; i++)
+            {
+                if (data[i] > maxValue)
+                    maxValue = data[i];
+                if (data[i] < minValue)
+                    minValue = data[i];
+            }
+
+            List<int>[] bucket = new List<int>[maxValue - minValue + 1];
+
+            for (int i = 0; i < bucket.Length; i++)
+            {
+                bucket[i] = new List<int>();
+            }
+
+            for (int i = 0; i < data.Length; i++)
+            {
+                bucket[data[i] - minValue].Add(data[i]);
+            }
+
+            int k = 0;
+            for (int i = 0; i < bucket.Length; i++)
+            {
+                if (bucket[i].Count > 0)
+                {
+                    for (int j = 0; j < bucket[i].Count; j++)
+                    {
+                        data[k] = bucket[i][j];
+                        k++;
+                    }
+                }
+            }
+        }
+
+        private void lstOrdenado_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
+}
